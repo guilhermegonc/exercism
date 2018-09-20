@@ -1,0 +1,12 @@
+[
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_is_triplet1",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_is_triplet2",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_is_triplet3",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_odd_number",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_range1",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_range2",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_triplet1",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_triplet2",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_triplet3",
+  "pythagorean_triplet_test.py::PythagoreanTripletTest::test_triplet4"
+]
