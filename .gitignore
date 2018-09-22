@@ -1,0 +1,11 @@
+*.beam
+*.pyc
+*.swp
+.DS_Store
+.ropeproject
+tmp
+bin/configlet
+bin/configlet.exe
+.idea/
+.cache
+__pycache__
