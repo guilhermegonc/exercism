@@ -1,4 +1,3 @@
-
 def hey(phrase):
     phrase = escape_special_chars(phrase.strip())
     if phrase.isspace() or len(phrase) == 0:
