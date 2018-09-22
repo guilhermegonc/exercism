@@ -1,9 +1,7 @@
 
 def hey(phrase):
-    phrase = phrase.strip()
-    escape_special_chars(phrase)
-    print(phrase)
-    if phrase.isspace() or phrase == '':
+    phrase = escape_special_chars(phrase.strip())
+    if phrase.isspace() or len(phrase) == 0:
         return 'Fine. Be that way!'
     elif phrase.isupper() and '?' in phrase[-1]:
         return 'Calm down, I know what I\'m doing!'
