@@ -3,6 +3,7 @@ from string import ascii_uppercase
 
 names_to_use = dict()
 
+
 class Robot:
     def __init__(self):
         self.alpha = ascii_uppercase
@@ -13,7 +14,7 @@ class Robot:
             raise ValueError('No names available.')
         while True:
             name = f'{"".join(sample(ascii_uppercase, 2))}{randint(0, 999):03d}'
-            if not (name in names_to_use and names_to_use[name]):
+            if name not in names_to_use:
                 break
         names_to_use[name] = True
         return name
@@ -21,5 +22,5 @@ class Robot:
     def reset(self):
         reset = self.name
         self.name = self.generator()
-        names_to_use[reset] = False
+        del names_to_use[reset]
         return self.name
