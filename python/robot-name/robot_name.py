@@ -1,11 +1,7 @@
-from random import randint
+from random import sample, randint
 from string import ascii_uppercase
 
-names_to_use = list()
-for c in ascii_uppercase:
-    for d in ascii_uppercase:
-        for n in range(0, 1000):
-            names_to_use.append(c + d + f'{n:03d}')
+names_to_use = dict()
 
 
 class Robot:
@@ -14,20 +10,17 @@ class Robot:
         self.name = self.generator()
 
     def generator(self):
-        global names_to_use
-        if len(names_to_use) == 0:
+        if len(names_to_use) == 26 * 26 * 1000:
             raise ValueError('No names available.')
         while True:
-            ind = randint(0, len(names_to_use) - 1)
-            name = names_to_use[randint(0, ind)]
-            if name in names_to_use:
+            name = f'{"".join(sample(ascii_uppercase, 2))}{randint(0, 999):03d}'
+            if name not in names_to_use:
                 break
-        names_to_use.remove(name)
+        names_to_use[name] = True
         return name
 
     def reset(self):
-        global names_to_use
-        to_add = self.name
+        reset = self.name
         self.name = self.generator()
-        names_to_use.append(to_add)
+        del names_to_use[reset]
         return self.name
