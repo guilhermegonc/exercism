@@ -8,10 +8,10 @@ def hey(phrase):
         if is_question(phrase):
             return 'Calm down, I know what I\'m doing!'
         return 'Whoa, chill out!'
-    else:
-        if is_question(phrase):
-            return 'Sure.'
-        return 'Whatever.'
+
+    if is_question(phrase):
+        return 'Sure.'
+    return 'Whatever.'
 
 
 def escape_special_chars(text):
