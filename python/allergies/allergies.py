@@ -1,35 +1,37 @@
-class Allergies(object):
+import pandas as pd
+
+class Allergies:
 
     def __init__(self, score):
-        allergies_dict = {
-            'eggs': 1, 'peanuts': 2, 'shellfish': 4, 'strawberries': 8,
-            'tomatoes': 16, 'chocolate': 32, 'pollen': 64, 'cats': 128
-        }
-
+        self.allergies_index = [
+            ['eggs', 1], ['peanuts', 2], ['shellfish', 4], ['strawberries', 8],
+            ['tomatoes', 16], ['chocolate', 32], ['pollen', 64], ['cats', 128]
+        ]
         self.score = score
-        self.valid_allergies_score = score
+        self.restrict_known_scores()
+        self.populate_list_of_allergies()
 
+    def restrict_known_scores(self):
         if self.score > 255:
-            self.valid_allergies_score = self.score % 256
+            return self.score % 256
+        return self.score
 
-        self.allergies = []
+    def populate_list_of_allergies(self):
+        allergies = []
+        top_score = self.restrict_known_scores()
 
-        top_score = allergy_score = self.valid_allergies_score
         while True:
             if top_score == 0:
                 break
-
-            for name, score_value in allergies_dict.items():
-                if score_value <= top_score:
-                    allergy_score = score_value
-                    valid_allergy = name
-
-            self.allergies.append(valid_allergy)
-            top_score -= allergy_score
+            for data in self.allergies_index[::-1]:  # Loop the scores to find the max viable
+                if data[1] <= top_score:
+                    allergies.append(data[0])
+                    top_score -= data[1]
+        return allergies
 
     def is_allergic_to(self, item):
-        return item in self.allergies
+        return item in self.populate_list_of_allergies()
 
     @property
     def lst(self):
-        return self.allergies
+        return self.populate_list_of_allergies()
