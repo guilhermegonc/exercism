@@ -1,7 +1,7 @@
 def hey(phrase):
-    phrase = escape_special_chars(phrase).strip()
+    phrase = phrase.strip()
 
-    if len(phrase) == 0:
+    if not phrase:
         return 'Fine. Be that way!'
 
     if phrase.isupper():
@@ -14,11 +14,5 @@ def hey(phrase):
     return 'Whatever.'
 
 
-def escape_special_chars(text):
-    text = text.replace(r'\n', '')
-    text = text.replace(r'\t', '')
-    return text
-
-
 def is_question(text):
-    return text[-1] == '?'
+    return text.endswith('?')
