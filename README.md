@@ -1,6 +1,6 @@
 # Exercism
 
-In this repository is uploaded all exercises purposed in exercism.com.
+In this repository there are just exercises from exercism.io.
 
 Language tracks:
 Python
