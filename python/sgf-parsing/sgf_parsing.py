@@ -1,5 +1,6 @@
 from re import search
 
+
 class SgfTree:
     def __init__(self, properties=None, children=None):
         self.properties = properties or {}
@@ -25,23 +26,24 @@ class SgfTree:
 
 
 def parse(input_string):
-    nodes_list = list()
-    node_parse = dict()
+    nodes_list = []
+    node_parse = {}
 
-    validate_syntax(input_string)
-    validate_content(input_string)
+    if invalid_syntax(input_string) or invalid_content(input_string):
+        raise ValueError('Invalid input. Piece with no properties.')
 
-    if search(r'\w', input_string) is None:
+    if empty_move(input_string):
         return SgfTree()
 
     for pos, character in enumerate(list(input_string)):
-        if character == ';':
-            str_parse = extract_info(input_string, pos)  # String selection
+        if character == ';':  # Each ';' indicates the presence of one piece
+            str_parse = extract_info(input_string, pos)  # String starts after ';' and go to next ';' or ')'
 
-            node_key = str_parse[0: str_parse.index('[')]  # Node Key
-            validate_uppercase(node_key)
+            node_key = str_parse[:str_parse.index('[')]  # Node Key ends before '['
+            if invalid_uppercase(node_key):
+                raise ValueError('Invalid input, problem with pieces.')
 
-            node_values = split_node_values(str_parse)  # Node Values
+            node_values = split_node_values(str_parse)  # Node values start after '['
 
             node_parse[node_key] = node_values.copy()  # Build Nodes
             nodes_list.append(node_parse.copy())  # Build Nodes Dict
@@ -51,24 +53,23 @@ def parse(input_string):
 
     if len(nodes_list) == 1:
         return SgfTree(properties=nodes_list[0])
-    else:
-        children_list = list()
-        for c in range(1, len(nodes_list)):
-            children_list.append(SgfTree(nodes_list[c]))
-        return SgfTree(properties=nodes_list[0], children=children_list)
+
+    children_list = list()
+    for c in range(1, len(nodes_list)):
+        children_list.append(SgfTree(nodes_list[c]))
+    return SgfTree(properties=nodes_list[0], children=children_list)
 
 
-def validate_syntax(text):
-    if len(text) >= 3 and ('(' and ')' and ';' in text):
-        return
-    raise ValueError('Invalid values, check the pieces and its properties.')
+def invalid_syntax(text):
+    return len(text) < 3 or not('(', ')', ';' in text)
 
 
-def validate_content(text):
-    if search(r'\w', text) and not ('[' and ']' in text):
-        raise ValueError('Invalid input. Piece with no porperties.')
-    else:
-        return
+def invalid_content(text):
+    return search(r'\w', text) and not ('[', ']' in text)
+
+
+def empty_move(input_string):
+    return search(r'\w', input_string) is None
 
 
 def extract_info(text, reference_number):
@@ -83,12 +84,14 @@ def extract_info(text, reference_number):
 def split_node_values(text):
     node_values = list()
     begin_index = end_index = text.index('[') + 1
+
     while True:
         if (begin_index or end_index) >= len(text) - 1:
             break
-        elif text[begin_index] not in '[]':
+
+        if text[begin_index] not in '[':  # Find first position for node value
             while True:
-                if text[end_index] == '\\':
+                if text[end_index] == '\\':  # Find final position for node value
                     end_index += 2
                     if end_index > len(text):
                         break
@@ -96,22 +99,20 @@ def split_node_values(text):
                     break
                 else:
                     end_index += 1
-            node_values.append(escape_special_chars(text[begin_index: end_index]))
+            node_values.append(escape_special_chars(text[begin_index: end_index]))  # Node value ignoring special chars
             begin_index = end_index + 1
         else:
             begin_index += 1
             end_index = begin_index
+
     return node_values
 
 
-def validate_uppercase(text):
-    if not (text.isupper()):
-        raise ValueError('Invalid input, problem with pieces.')
-    return
+def invalid_uppercase(text):
+    return not(text.isupper())
 
 
 def escape_special_chars(text):
-    text = ''.join(text)
     text = text.replace('\]', ']')
     text = text.replace('\:', ':')
     text = text.replace('\\t', ' ')
