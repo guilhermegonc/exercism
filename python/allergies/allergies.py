@@ -15,7 +15,7 @@ class Allergies:
             return self.score % (possibilities + 1)
         return self.score
 
-    def populate_list_of_allergies(self):
+    def populate_list(self):
         allergies = []
         top_score = self.restrict_known_scores()
 

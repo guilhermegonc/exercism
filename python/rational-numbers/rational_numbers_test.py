@@ -102,7 +102,8 @@ class RationalNumbersTest(unittest.TestCase):
 
     def test_raise_a_real_number_to_a_negative_rational(self):
         self.assertAlmostEqual(
-            9 ** Rational(-1, 2), 0.3333333333333333, places=8)
+            9 ** Rational(-1, 2), 0.3333333333333333, places=8
+        )
 
     def test_raise_a_real_number_to_a_zero_rational(self):
         self.assertAlmostEqual(2 ** Rational(0, 1), 1.0, places=8)

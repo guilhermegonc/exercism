@@ -2,46 +2,46 @@ from __future__ import division
 
 
 class Rational:
-    def __init__(self, numerator, denominator):
-        if numerator == 0:
-            numerator, denominator = 0, 1
+    def __init__(self, num, den):  #  Num is short for numerator and den short for denominator
+        if num == 0:
+            num, den = 0, 1
 
-        if denominator < 0:
-            numerator, denominator = -numerator, -denominator
+        if den < 0:
+            num, den = -num, -den
 
-        for c in range(1, denominator + 1):
-            if numerator % c == 0 and denominator % c == 0:
-                self.numer, self.denom = numerator // c, denominator // c
+        for c in range(1, den + 1):
+            if num % c == 0 and den % c == 0:
+                self.num, self.den = num // c, den // c
 
     def __eq__(self, other):
-        return self.numer == other.numer and self.denom == other.denom
+        return self.num == other.num and self.den == other.den
 
     def __repr__(self):
-        return f'{self.numer}/{self.denom}'
+        return f'{self.num}/{self.den}'
 
     def __add__(self, other):
-        return Rational(self.numer * other.denom + other.numer * self.denom, self.denom * other.denom)
+        return Rational(self.num * other.den + other.num * self.den, self.den * other.den)
 
     def __sub__(self, other):
-        return Rational(self.numer * other.denom - other.numer * self.denom, self.denom * other.denom)
+        return Rational(self.num * other.den - other.num * self.den, self.den * other.den)
 
     def __mul__(self, other):
-        return Rational(self.numer * other.numer, self.denom * other.denom)
+        return Rational(self.num * other.num, self.den * other.den)
 
     def __truediv__(self, other):
-        return Rational(self.numer * other.denom, self.denom * other.numer)
+        return Rational(self.num * other.den, self.den * other.num)
 
     def __abs__(self):
-        if self.numer < 0:
-            return Rational(-self.numer, self.denom)
-        return Rational(self.numer, self.denom)
+        if self.num < 0:
+            return Rational(-self.num, self.den)
+        return Rational(self.num, self.den)
 
     def __pow__(self, power):
         if power > 0:
-            return Rational(self.numer ** power, self.denom ** power)
+            return Rational(self.num ** power, self.den ** power)
         if power < 0:
-            return Rational(self.denom ** power, self.numer ** power)
+            return Rational(self.den ** power, self.num ** power)
         return Rational(1, 1)
 
     def __rpow__(self, base):
-        return base ** (self.numer / self.denom)
+        return base ** (self.num / self.den)
