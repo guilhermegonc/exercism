@@ -11,6 +11,6 @@ def rotate(text, key):
             ascii_rotate[(pos - key) % 26] = ch
 
     ascii_rotate = ''.join(ascii_rotate) + ''.join(ascii_rotate).upper()
-    transcription = str.maketrans(ascii_letters, ascii_rotate)
+    dictionary = str.maketrans(ascii_letters, ascii_rotate)
 
-    return str.translate(text, transcription)
+    return str.translate(text, dictionary)
