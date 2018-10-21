@@ -13,4 +13,4 @@ def rotate(text, key):
     ascii_rotate = ''.join(ascii_rotate) + ''.join(ascii_rotate).upper()
     dictionary = str.maketrans(ascii_letters, ascii_rotate)
 
-    return str.translate(text, dictionary)
+    return text.translate(dictionary)

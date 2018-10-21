@@ -1,9 +1,17 @@
-def test_input(series, size):
-    if size > len(series) or size < 0:
-        raise ValueError('Invalid syntax, check the sample size.')
-    for c in series:
-        if c.lower() not in '0123456789':
-            raise ValueError('Invalid series. Check for not numerals.')
+def largest_product(series, size):
+    if invalid_test_input(series, size):
+        raise ValueError('Invalid series or size input.')
+
+    max_prod = 0
+    for pos in range(len(series) - size + 1):
+        if prod_from_list(series[pos: pos + size]) > max_prod:
+            max_prod = prod_from_list(series[pos: pos + size])
+
+    return max_prod
+
+
+def invalid_test_input(series, size):
+    return size < 0 or size > len(series) or (len(series) > 0 and not series.isdigit())
 
 
 def prod_from_list(text):
@@ -13,11 +21,4 @@ def prod_from_list(text):
     return result
 
 
-def largest_product(series, size):
-    test_input(series, size)
-    max_prod = 0
-    for pos in range(0, len(series) - size + 1):
-        prod = prod_from_list(series[pos: pos + size])
-        if prod > max_prod:
-            max_prod = prod
-    return max_prod
+
