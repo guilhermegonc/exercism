@@ -1,6 +1,6 @@
 def on_square(integer_number):
     if integer_number not in range(1, 65):
-        raise ValueError('This number is out of range the chessboard.')
+        raise ValueError('This number is out of the range of the chessboard.')
     return 2 ** (integer_number - 1)
 
 
