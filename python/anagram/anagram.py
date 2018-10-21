@@ -6,4 +6,3 @@ def find_anagrams(word, candidates):
             true_anagrams.append(to_test)
 
     return true_anagrams
-
