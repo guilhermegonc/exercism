@@ -6,7 +6,6 @@ your program should raise a ValueError with a meaningful error message.
 
 Feel free to reuse your code from the 'series' exercise!
 """
-
 import unittest
 
 from largest_series_product import largest_product
@@ -67,7 +66,7 @@ class LargestSeriesProductTest(unittest.TestCase):
         with self.assertRaisesWithMessage(ValueError):
             largest_product("12345", -1)
 
-    #@unittest.skip("extra-credit")
+    # @unittest.skip("extra-credit")
     def test_project_euler_big_number(self):
         series = (
             "73167176531330624919225119674426574742355349194934969835203127745"
