@@ -1,38 +1,34 @@
-from re import search
-
-
 def verify(isbn):
-    isbn = list(isbn.replace('-', ''))
+    isbn = isbn.replace('-', '')
 
-    if invalid_isbn_number(isbn):
+    if valid_isbn_format(isbn):
+        return (multiply_isbn_terms(isbn[:-1]) + get_last_term(isbn)) % 11 == 0
+    return False
+
+
+def valid_isbn_format(text):
+    if len(text) != 10:  # Verify ISBN length
         return False
-    return (multiply_isbn_terms(isbn[:-1]) + get_last_term(isbn)) % 11 == 0
 
-
-def invalid_isbn_number(text):
-    if len(text) != 10:
-        return True
-
-    for n in text[:-2]:
-        if search(r'[0-9]', n) is None:
-            return True
-    pass
-
-
-def get_last_term(text):
-    value = text[-1]
-
-    if value in 'Xx':
-        return 10
-
-    if search(r'[0-9]', value) is None:
+    if not text[:-1].isdigit():
         return False
-    return int(value)
+    return True
 
 
 def multiply_isbn_terms(isbn):
     product = 0
-
+    
     for pos, n in enumerate(isbn[::-1]):
         product += ((pos + 2) * int(n))
     return product
+
+
+def get_last_term(text):
+    value = text[-1].upper()
+
+    if value == 'X':
+        return 10
+
+    if not value.isdigit():
+        return False
+    return int(value)
