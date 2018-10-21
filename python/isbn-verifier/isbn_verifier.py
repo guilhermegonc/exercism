@@ -17,7 +17,7 @@ def valid_isbn_format(text):
 
 def multiply_isbn_terms(isbn):
     product = 0
-    
+
     for pos, n in enumerate(isbn[::-1]):
         product += ((pos + 2) * int(n))
     return product
