@@ -19,6 +19,3 @@ def prod_from_list(text):
     for f in text:
         result *= int(f)
     return result
-
-
-
