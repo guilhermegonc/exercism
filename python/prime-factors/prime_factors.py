@@ -1,5 +1,6 @@
 def prime_factors(natural_number):
-    prime_list, divisor = [], 2
+    prime_list = []
+    divisor = 2
 
     while natural_number > 1:
 
