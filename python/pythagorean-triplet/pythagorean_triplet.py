@@ -1,47 +1,45 @@
-def primitive_triplets(number_in_triplet):
-    validate_b_input(number_in_triplet)
+def primitive_triplets(b_num):
+    if invalid_b_input(b_num):
+        raise ValueError('B input is invalid.')
+
     triplets = set()
-    for n in range(1, number_in_triplet):
-        for m in range(n, number_in_triplet):
-            if m * n * 2 == number_in_triplet and mn_coprime(m, n):
-                a, b, c = define_abc_from_nm(m, n)
-                if a % 2 != 0 and c % 2 != 0:
-                    sizes = sorted([a, b, c])
-                    triplet = (sizes[0], sizes[1], sizes[2])
-                    triplets.add(triplet)
+    for m in range(1, (b_num // 2) + 1):
+        n = b_num // (m * 2)
+
+        if b_num % (m * 2) == 0 and m > n and are_coprime(m, n):
+            sizes = sorted(define_abc_from_nm(m, n))
+            triplets.add((sizes[0], sizes[1], sizes[2]))
+
     return triplets
 
 
-def triplets_in_range(range_start, range_end):
+def invalid_b_input(b):
+    return b % 4 != 0
+
+
+def are_coprime(m, n):
+    for mmc in range(2, n + 1):
+        if m % mmc == 0 and n % mmc == 0:
+            return False
+    return True
+
+
+def define_abc_from_nm(m, n):
+    return [m ** 2 + n ** 2,  m * n * 2, m ** 2 - n ** 2]
+
+
+def triplets_in_range(start, end):
     triplets = set()
-    for a in range(range_start, range_end + 1):
-        for b in range(a, range_end + 1):
-            for c in range(b, range_end + 1):
-                if is_triplet((a, b, c)):
+    for a in range(start, end + 1):
+        for b in range(a, end + 1):
+            for c in range(b, end + 1):
+
+                if is_triplet([a, b, c]):
                     triplets.add((a, b, c))
+
     return triplets
 
 
 def is_triplet(triplet):
     to_test = sorted(triplet)
     return to_test[0] ** 2 + to_test[1] ** 2 == to_test[2] ** 2
-
-
-def validate_b_input(b):
-    if b % 4 == 0:
-        return
-    raise ValueError('B input is invalid.')
-
-
-def mn_coprime(m, n):
-    for mmc in range(2, min(m, n) + 1):
-        if m % mmc == 0 and n % mmc == 0 and m > n > 0:
-            return False
-    return True
-
-
-def define_abc_from_nm(m, n):
-    a = m ** 2 + n ** 2
-    b = m * n * 2
-    c = m ** 2 - n ** 2
-    return a, b, c
