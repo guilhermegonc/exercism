@@ -30,6 +30,7 @@ def define_abc_from_nm(m, n):
 
 def triplets_in_range(start, end):
     triplets = set()
+
     for a in range(start, end + 1):
         for b in range(a, end + 1):
             for c in range(b, end + 1):
