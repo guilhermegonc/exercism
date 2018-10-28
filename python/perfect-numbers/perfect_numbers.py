@@ -1,29 +1,24 @@
 def classify(number):
-    validate_input(number)
-    s = sum_of_factors(number)
-    if s == number and number != 1:
-        return 'perfect'
-    elif s > number:
-        return 'abundant'
-    else:
-        return 'deficient'
-
-
-def validate_input(number):
     if number <= 0:
         raise ValueError('Invalid input.')
-    pass
+    total = sum_of_factors(number)
+
+    if total < number or number == 1:
+        return 'deficient'
+    if total > number:
+        return 'abundant'
+    if total == number:
+        return 'perfect'
 
 
 def sum_of_factors(number):
-    s, div, limit = 1, 2, number
-    while True:
-        if div >= limit:
-            break
+    total, div, limit = 1, 2, number
+
+    while div < limit:
+        if number % div == 0 and number / div != div:
+            total += (div + number / div)
         elif number % div == 0:
-            s += div
-            if number / div != div:
-                s += number / div
+            total += div
         limit = number / div
         div += 1
-    return s
+    return total
