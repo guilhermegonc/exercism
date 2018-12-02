@@ -1,4 +1,5 @@
-import math
+from math import e, sin, cos
+
 
 class ComplexNumber:
     def __init__(self, real, imaginary):
@@ -38,6 +39,6 @@ class ComplexNumber:
 
     def exp(self):
         return ComplexNumber(
-            math.e ** self.real * math.cos(self.imaginary),
-            math.sin(self.imaginary)
+            e ** self.real * cos(self.imaginary),
+            sin(self.imaginary)
         )
