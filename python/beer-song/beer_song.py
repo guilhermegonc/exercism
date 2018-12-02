@@ -21,9 +21,9 @@ def recite(start, take=1):
             part_2 = 'Take it down and pass it around, no more bottles of beer on the wall.'
         else:
             part_2 = 'Go to the store and buy some more, 99 bottles of beer on the wall.'
+            num_bottles = 99
         lst.append(part_2)
 
-        if i != take - 1:
-            lst.append('')
-
+        if i < take - 1:
+        
     return lst
