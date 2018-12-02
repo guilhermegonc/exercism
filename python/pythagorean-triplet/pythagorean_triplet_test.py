@@ -10,8 +10,7 @@
 #       components
 #
 #       Args:
-#          b - an integer divisible by 4 (see explanation below)
-#
+#          b - an integer divisible by 4 (see explanantion below)
 #
 # Note that in the latter function the components other than the argument can
 # be quite large.
