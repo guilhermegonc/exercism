@@ -34,7 +34,6 @@ def triplets_in_range(start, end):
     for a in range(start, end + 1):
         for b in range(a, end + 1):
             for c in range(b, end + 1):
-
                 if is_triplet([a, b, c]):
                     triplets.add((a, b, c))
 
