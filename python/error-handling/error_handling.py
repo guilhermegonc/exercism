@@ -6,7 +6,7 @@ def handle_error_by_returning_none(input_data):
         try:
             input_data = int(input_data)
             return input_data
-        except TypeError:
+        except ValueError:
             return None
 
 
@@ -14,7 +14,7 @@ def handle_error_by_returning_tuple(input_data):
     try:
         input_data = int(input_data)
         return True, input_data
-    except:
+    except ValueError:
         return False, None
 
 
