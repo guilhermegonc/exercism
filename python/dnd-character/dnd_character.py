@@ -1,11 +1,10 @@
 from random import randint
-from math import floor
 
 
 class Character:
     def __init__(self):
         ability_values = [self.ability() for _ in range(6)]
-        self.strength, self.dexterity, self.constitution, \
+        self.strength, self.dexterity, self.constitution,\
         self.intelligence, self.wisdom, self.charisma = ability_values
 
         self.hitpoints = 10 + modifier(self.constitution)
@@ -20,10 +19,10 @@ class Character:
                f'Hitpoints: {self.hitpoints}'
 
     def ability(self):
-        values = [randint(1, 6) for i in range(4)]
+        values = [randint(1, 6) for _ in range(4)]
         values = sorted(values)
         return sum(values[1:])
 
 
 def modifier(num):
-    return floor((num - 10) / 2)
+    return (num - 10) // 2
