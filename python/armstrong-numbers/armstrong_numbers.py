@@ -3,7 +3,7 @@ def is_armstrong(number):
     factors = str(number)
     power = len(factors)
 
-    for f in factors[:]:
+    for f in factors:
         value += int(f) ** power
 
     return number == value
