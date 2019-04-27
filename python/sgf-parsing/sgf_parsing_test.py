@@ -1,6 +1,6 @@
 import unittest
 
-from sgf_parsing_2 import parse, SgfTree
+from sgf_parsing import parse, SgfTree
 
 
 # Tests adapted from `problem-specifications//canonical-data.json` @ v1.0.0

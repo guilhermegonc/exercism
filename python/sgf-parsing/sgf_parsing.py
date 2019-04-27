@@ -1,4 +1,4 @@
-from re import search
+import re
 
 
 class SgfTree:
@@ -26,95 +26,55 @@ class SgfTree:
 
 
 def parse(input_string):
-    nodes_list = []
-    node_parse = {}
 
-    if invalid_syntax(input_string) or invalid_content(input_string):
-        raise ValueError('Invalid input. Piece with no properties.')
+    if invalid_basic_syntax(input_string):
+        raise ValueError('Invalid input. Check for \'(\'\';\'\')\' in your input.')
 
     if empty_move(input_string):
         return SgfTree()
 
-    for pos, character in enumerate(list(input_string)):
-        if character == ';':  # Each ';' indicates the presence of one piece
-            str_parse = extract_info(input_string, pos)  # String starts after ';' and go to next ';' or ')'
+    node = {}
+    n_list = []
+    moves = [match.group() for match in re.finditer(r'(;\w*)+((\[)+((\w+)|(\s+)|(\\|\])*)+(]))+', input_string)]
 
-            node_key = str_parse[:str_parse.index('[')]  # Node Key ends before '['
-            if invalid_uppercase(node_key):
-                raise ValueError('Invalid input, problem with pieces.')
+    if len(moves) == 0:
+        raise ValueError('Node without information.')
 
-            node_values = split_node_values(str_parse)  # Node values start after '['
+    for m in moves:
+        action = split_move_from_prop(m)
+        action_props = [escape_special_chars(match.group()[1:-1])
+                        for match in re.finditer(r'((\[)+((\w+)|(\s+)|(\\|\])*)+(]))', m)]
 
-            node_parse[node_key] = node_values.copy()  # Build Nodes
-            nodes_list.append(node_parse.copy())  # Build Nodes Dict
+        node[action] = action_props[:]
+        n_list.append(node.copy())
 
-            node_values.clear()
-            node_parse.clear()
+        action_props.clear()
+        node.clear()
 
-    if len(nodes_list) == 1:
-        return SgfTree(properties=nodes_list[0])
-
-    children_list = list()
-    for c in range(1, len(nodes_list)):
-        children_list.append(SgfTree(nodes_list[c]))
-    return SgfTree(properties=nodes_list[0], children=children_list)
+    child = [SgfTree(np) for np in n_list[1:]]
+    return SgfTree(properties=n_list[0], children=child)
 
 
-def invalid_syntax(text):
-    return len(text) < 3 or not('(', ')', ';' in text)
-
-
-def invalid_content(text):
-    return search(r'\w', text) and not ('[', ']' in text)
+def invalid_basic_syntax(text):
+    return re.search(r'(\()+(;.*)+(\)$)', text) is None
 
 
 def empty_move(input_string):
-    return search(r'\w', input_string) is None
+    return re.search(r'\w', input_string) is None
 
 
-def extract_info(text, reference_number):
-    begin_index = end_index = reference_number + 1
-    while True:
-        if text[end_index] in ';)' or end_index == len(text):
-            break
-        end_index += 1
-    return text[begin_index: end_index]
+def split_move_from_prop(m):
+    action = re.search(f';\w*', m).group()
+    action = re.sub(';', '', action)
 
+    if not (action.isupper()):
+        raise ValueError('Invalid Input. Piece must be all uppercase.')
 
-def split_node_values(text):
-    node_values = list()
-    begin_index = end_index = text.index('[') + 1
-
-    while True:
-        if (begin_index or end_index) >= len(text) - 1:
-            break
-
-        if text[begin_index] not in '[':  # Find first position for node value
-            while True:
-                if text[end_index] == '\\':  # Find final position for node value
-                    end_index += 2
-                    if end_index > len(text):
-                        break
-                elif text[end_index] == ']':
-                    break
-                else:
-                    end_index += 1
-            node_values.append(escape_special_chars(text[begin_index: end_index]))  # Node value ignoring special chars
-            begin_index = end_index + 1
-        else:
-            begin_index += 1
-            end_index = begin_index
-
-    return node_values
-
-
-def invalid_uppercase(text):
-    return not(text.isupper())
+    return action
 
 
 def escape_special_chars(text):
     text = text.replace('\]', ']')
-    text = text.replace('\:', ':')
     text = text.replace('\\t', ' ')
     text = text.replace('\\n', '\n')
     return text
