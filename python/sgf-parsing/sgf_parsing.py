@@ -50,13 +50,12 @@ def parse(input_string):
 
         action_props.clear()
         node.clear()
-
     child = [SgfTree(np) for np in n_list[1:]]
     return SgfTree(properties=n_list[0], children=child)
 
 
 def invalid_basic_syntax(text):
-    return re.search(r'(\()+(;.*)+(\)$)', text) is None
+    return re.search(r'(\(;(.|\s)*\)$)', text) is None
 
 
 def empty_move(input_string):
@@ -75,6 +74,6 @@ def split_move_from_prop(m):
 
 def escape_special_chars(text):
     text = text.replace('\]', ']')
-    text = text.replace('\\t', ' ')
+    text = text.replace('\t', ' ')
     text = text.replace('\\n', '\n')
     return text
