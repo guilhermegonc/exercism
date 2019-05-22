@@ -1,13 +1,15 @@
 def sieve(limit):
-    natural_numbers = list(range(2, limit+1))
-    prime_list = natural_numbers.copy()
+    int_range = [n for n in range(2, int(limit ** 0.5) + 1)]
+    boolean_list = [True for _ in range(2, limit + 1)]
 
-    for prime in natural_numbers:
-        end_position = (max(prime_list) // prime) + 1  # Avoid extra operations
-        not_primes = [prime * i for i in prime_list[:end_position]]
+    for index, n in enumerate(int_range):
 
-        for value in not_primes:
-            if value in prime_list:
-                prime_list.remove(value)
+        if boolean_list[index] is True:
+            i = 0
 
-    return prime_list
+            while (n ** 2) + (n * i) <= limit:
+                value = (n ** 2) + (n * i)
+                i += 1
+                boolean_list[value - 2] = False
+
+    return [prime + 2 for prime, boolean in enumerate(boolean_list) if boolean is True]
