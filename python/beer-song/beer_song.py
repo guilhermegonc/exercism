@@ -22,5 +22,6 @@ def recite(start, take=1):
         lst.append(part_2)
 
         if i < take - 1:
-        
+            lst.append('')
+
     return lst

@@ -1,8 +1,9 @@
-def is_paired(input_string):  #Look for the first not opening brac, then compare in order if they close properly
+def is_paired(input_string):
     bracs_dict = {'{': '}', '[': ']', '(': ')'}
     bracs = []
 
     for ind, char in enumerate(input_string):
+
         if char in '{[(':
             bracs.append(bracs_dict[char])
 
@@ -16,6 +17,3 @@ def is_paired(input_string):  #Look for the first not opening brac, then compare
             return False
 
     return len(bracs) == 0
-
-print(is_paired("\\left(\\begin{array}{cc} \\frac{1}{3} & x\\\\ \\mathrm{e}^{"
-                 "x} &... x^2 \\end{array}\\right)"))
