@@ -1,4 +1,4 @@
-from random import randint
+from random import sample
 
 
 class Character:
@@ -6,7 +6,6 @@ class Character:
         ability_values = [self.ability() for _ in range(6)]
         self.strength, self.dexterity, self.constitution,\
         self.intelligence, self.wisdom, self.charisma = ability_values
-
         self.hitpoints = 10 + modifier(self.constitution)
 
     def __repr__(self):
@@ -19,9 +18,8 @@ class Character:
                f'Hitpoints: {self.hitpoints}'
 
     def ability(self):
-        values = [randint(1, 6) for _ in range(4)]
-        values = sorted(values)
-        return sum(values[1:])
+        values = sample(range(1, 6), 4)
+        return sum(values) - min(values)
 
 
 def modifier(num):
