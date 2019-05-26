@@ -7,8 +7,7 @@ class Allergies:
         ]
 
     def populate_list(self):
-        allergies = [allerg[0] for allerg in self.allergies_index if self.score & allerg[1] != 0]
-        return allergies
+        return [a[0] for a in self.allergies_index if self.score & a[1] != 0]
 
     def is_allergic_to(self, item):
         return item in self.populate_list()
