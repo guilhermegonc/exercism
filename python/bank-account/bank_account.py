@@ -14,7 +14,7 @@ class BankAccount:
 
     def open(self):
         self.status = True
-        return
+        pass
 
     def deposit(self, amount):
         if self.status and amount > 0:
@@ -24,12 +24,13 @@ class BankAccount:
         raise ValueError
 
     def withdraw(self, amount):
-            if self.status and self.balance >= amount >= 0:
-                with self.lock:
-                    self.balance -= amount
-                return self.balance
-            raise ValueError
+        if self.status and self.balance >= amount >= 0:
+            with self.lock:
+                self.balance -= amount
+            return self.balance
+
+        raise ValueError
 
     def close(self):
         self.status = False
-        return
+        pass
