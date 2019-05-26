@@ -1,14 +1,19 @@
 class Matrix(object):
     def __init__(self, matrix_string):
-        self.matrix_string = matrix_string
-        self.row_split = self.matrix_string.split('\n')
+        matrix = []
+        for r in matrix_string.split('\n'):
+            try:
+                row = list(map(int, r.split(' ')))
+                matrix.append(row)
+            except ValueError:
+                print('Matrix elements must be int.')
+        self.matrix = matrix
 
     def __repr__(self):
-        return str(self.matrix_string)
+        return str(self.matrix)
 
     def row(self, index):
-        selected_row = self.row_split[index - 1]
-        return [int(i) for i in selected_row.split()]
+        return self.matrix[index - 1]
 
     def column(self, index):
-        return [self.row(i)[index - 1] for i in range(1, len(self.row_split) + 1)]
+        return [c[index - 1] for c in self.matrix]
