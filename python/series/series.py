@@ -5,7 +5,7 @@ def slices(series, length):
     if length > len(series) or length <= 0:
         raise ValueError("Substring's length must be bigger than zero and smaller than series' length")
 
-    while end <= len(series) and length > 0:
+    while 0 < end <= len(series):
         list_of_subs.append(series[begin:end])
         begin += 1
         end += 1
