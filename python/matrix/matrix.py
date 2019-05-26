@@ -1,13 +1,6 @@
 class Matrix(object):
     def __init__(self, matrix_string):
-        matrix = []
-        for r in matrix_string.split('\n'):
-            try:
-                row = list(map(int, r.split(' ')))
-                matrix.append(row)
-            except ValueError:
-                print('Matrix elements must be int.')
-        self.matrix = matrix
+        self.matrix = [list(map(int, i.split(' '))) for i in matrix_string.split('\n')]
 
     def __repr__(self):
         return str(self.matrix)
