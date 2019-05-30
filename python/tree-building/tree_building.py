@@ -13,7 +13,7 @@ class Node:
         self.children = []
 
     def __repr__(self):
-        return f'Node_id: {self.node_id}\nChildren: {self.children}\n'
+        return f'n.id: {self.node_id} c:{len(self.children)}'
 
 
 def BuildTree(records):
@@ -27,26 +27,21 @@ def BuildTree(records):
         node = Node(r.record_id)
         trees.append(node)
 
-    node_children = []
-    ids_to_check = ordered_id.copy()
-    for ind in ordered_id:
-        for j in ids_to_check:
-            if records[j].parent_id == ind:
-                node_children.append(trees[j])
-                ids_to_check.remove(j)
-            trees[ind].children.append(node_children)
-            node_children = []
+    # for o in ordered_id:
+    #     for j in ordered_id[:o]:
+    #         if records[o].parent_id == j and records[o].record_id != 0:
+    #             trees[j].children.append(trees[o])
 
-    # for node in trees:
-    #     for r in records:
-    #         if node.node_id == r.parent_id:
-    #             for k in trees:
-    #                 if r.record_id == k.node_id and k.node_id != 0:
-    #                     node.children.append(k)
+    for node in trees:
+        for r in records:
+            if node.node_id == r.parent_id:
+                for k in trees:
+                    if r.record_id == k.node_id and k.node_id != 0:
+                        node.children.append(k)
 
     root = None
     if len(trees) > 0:
-        root = trees[0]
+        root = trees
 
     return root
 
@@ -76,5 +71,14 @@ def validate_precedence(record_obj):
     pass
 
 
-records = [Record(2, 0), Record(1, 0), Record(0, 0), Record(3, 1), Record(4, 1)]
-BuildTree(records)
+# records = [
+#             Record(6, 2),
+#             Record(0, 0),
+#             Record(3, 1),
+#             Record(2, 0),
+#             Record(4, 1),
+#             Record(5, 2),
+#             Record(1, 0)
+#         ]
+#
+# print(BuildTree(records))
