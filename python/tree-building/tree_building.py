@@ -65,4 +65,4 @@ def build_node_tree(records):
 def build_node_relations(nodes, relations):
     for i, c in relations:
         nodes[i].children.append(c)
-    return nodes
+    return tree
