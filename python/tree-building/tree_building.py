@@ -18,51 +18,42 @@ class Node:
 
 def BuildTree(records):
     records.sort(key=lambda x: x.record_id)
-    ordered_id = [r.record_id for r in records]
-    parent_id = [c.parent_id for c in records]
+    ordered_ids = [r.record_id for r in records]
+    parent_ids = [c.parent_id for c in records]
 
-    validate_tree_structure(ordered_id)
-    tree = build_node_tree(records)
+    validate_tree_structure(ordered_ids)
+    nodes_tree = list(map(build_node_tree, records))
 
-    parent_child = zip(parent_id[1:], tree[1:])
-    lst_of_nodes = build_node_relations(tree, parent_child)
+    parent_child = zip(parent_ids[1:], nodes_tree[1:])
+    nodes_list = build_node_relations(nodes_tree, parent_child)
 
-    root = None
-    if len(lst_of_nodes) > 0:
-        root = lst_of_nodes[0]
-
-    return root
+    if len(nodes_list) <= 0:
+        return None
+    return nodes_list[0]
 
 
 def validate_tree_structure(lst_of_record_ids):
-    if len(lst_of_record_ids) > 0:
-        if lst_of_record_ids[0] != 0:
-            raise ValueError('Tree must start with id 0')
-        if lst_of_record_ids[-1] != len(lst_of_record_ids) - 1:
-            raise ValueError('Tree must be continuous')
-    pass
+    if len(lst_of_record_ids) <= 0:
+        return
+    if lst_of_record_ids[0] != 0:
+        raise ValueError('Tree must start with id 0')
+    if lst_of_record_ids[-1] != len(lst_of_record_ids) - 1:
+        raise ValueError('Tree must be continuous')
 
 
 def validate_precedence(record_obj):
-    if record_obj.record_id == 0 and record_obj.parent_id != 0:
-        raise ValueError('Root node cannot have a parent')
-    if record_obj.record_id < record_obj.parent_id:
-        raise ValueError('Parent id must be lower than child id')
     if record_obj.record_id == record_obj.parent_id and record_obj.record_id != 0:
         raise ValueError('Tree is a cycle')
-    pass
+    if record_obj.record_id < record_obj.parent_id:
+        raise ValueError('Parent id must be lower than child id')
 
 
-def build_node_tree(records):
-    tree = []
-    for r in records:
-        validate_precedence(r)
-        node = Node(r.record_id)
-        tree.append(node)
-    return tree
+def build_node_tree(record):
+    validate_precedence(record)
+    return Node(record.record_id)
 
 
 def build_node_relations(nodes, relations):
-    for i, c in relations:
-        nodes[i].children.append(c)
+    for n_id, c in relations:
+        nodes[n_id].children.append(c)
     return nodes
