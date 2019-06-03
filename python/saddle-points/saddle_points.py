@@ -30,12 +30,11 @@ class Matrix:
 
 
 def saddle_points(matrix):
-    if len(matrix) == 0:
-        return [{}]
-
-    if invalid_matrix_size(matrix):
+    if invalid_input_format(matrix):
         raise ValueError('Irregular matrix is not valid.')
 
+    if len(matrix) == 0:
+        return [{}]
     matrix = Matrix(matrix)
 
     max_values_indexes = matrix.find_max_row_values()
@@ -47,7 +46,7 @@ def saddle_points(matrix):
     return [{'row': matrix.positions[i][1][0] + 1, 'column': matrix.positions[i][1][1] + 1} for i in saddle_indexes]
 
 
-def invalid_matrix_size(row_lists):
+def invalid_input_format(row_lists):
     test_list = set([len(r) for r in row_lists])
     if len(test_list) == 1:
         return False
