@@ -5,7 +5,7 @@ def saddle_points(matrix):
     if irregular_dimensions(matrix):
         raise ValueError('Irregular matrix dimensions')
 
-    columns = build_matrix_columns(matrix)
+    columns = list(zip(*matrix))
 
     saddle_values = []
     for ind_r, i in enumerate(matrix):
@@ -21,11 +21,3 @@ def saddle_points(matrix):
 def irregular_dimensions(matrix):
     distinct_row_dimensions = set([len(m) for m in matrix])
     return len(distinct_row_dimensions) > 1
-
-
-def build_matrix_columns(matrix_rows):
-    columns = []
-    for i in range(len(matrix_rows[0])):
-        c = [m[i] for m in matrix_rows]
-        columns.append(c)
-    return columns
