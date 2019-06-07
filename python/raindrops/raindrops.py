@@ -1,15 +1,11 @@
 def raindrops(number):
+    criteria = {3: 'Pling', 5: 'Plang', 7: 'Plong'}
+
     string = ''
-    if number % 3 == 0:
-        string += 'Pling'
-
-    if number % 5 == 0:
-        string += 'Plang'
-
-    if number % 7 == 0:
-        string += 'Plong'
+    for c in criteria.items():
+        if number % c[0] == 0:
+            string += c[1]
 
     if len(string) == 0:
         return str(number)
-
     return string
