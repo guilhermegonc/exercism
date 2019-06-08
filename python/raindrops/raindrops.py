@@ -1,11 +1,7 @@
 def raindrops(number):
-    criteria = {3: 'Pling', 5: 'Plang', 7: 'Plong'}
+    criteria = zip((3, 5, 7), ('Pling', 'Plang', 'Plong'))
+    text = [c[1] for c in criteria if number % c[0] == 0]
 
-    string = ''
-    for c in criteria.items():
-        if number % c[0] == 0:
-            string += c[1]
-
-    if len(string) == 0:
+    if len(text) == 0:
         return str(number)
-    return string
+    return ''.join(text)
