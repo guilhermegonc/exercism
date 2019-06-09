@@ -13,7 +13,7 @@ palindrome in arbitrary order.
 
 import unittest
 
-from palindrome_products_2 import smallest_palindrome, largest_palindrome
+from palindrome_products import smallest_palindrome, largest_palindrome
 
 
 # Tests adapted from `problem-specifications//canonical-data.json` @ v1.2.0
