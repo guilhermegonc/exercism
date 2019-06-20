@@ -8,13 +8,25 @@ class Board:
 
     def __init__(self, board):
         self.board = board
-        self.areas = {"B": BLACK, "W": WHITE, None: NONE}
 
     def __repr__(self):
         return '\n'.join(self.board)
 
     def territory(self, x, y):
-        return self.areas[self.find_piece(x, y)]
+        piece = self.find_piece(x, y)
+        if piece[0] in 'BW':
+            return NONE
+        piece += self.find_upper_piece(x, y)
+        piece += self.find_right_piece(x, y)
+        piece += self.find_under_piece(x, y)
+        piece += self.find_left_piece(x, y)
+        piece = piece.strip()
+
+        if piece.strip() in ['WW', 'WWW', 'WWWW']:
+            return WHITE
+        if piece.strip() in ['BB', 'BBB', 'BBBB']:
+            return BLACK
+        return NONE
 
     def territories(self):
         """Find the owners and the territories of the whole board
@@ -32,29 +44,35 @@ class Board:
     def find_piece(self, x, y):
         return self.board[y][x]
 
-    def find_left_piece(self, x, y):
-        for c in self.board[y][x - 1::-1]:
-            if c != ' ':
-                return c
-        return None
+    def find_upper_piece(self, x, y):
+        begin = y - 1 if y - 1 >= 0 else 0
+        rng = list(range(begin, -1, -1))
+        for ind, c in enumerate(self.board[begin::-1]):
+            if c[x] != ' ':
+                return c[x], rng
+        return None, rng
 
     def find_right_piece(self, x, y):
-        for c in self.board[y][x:]:
+        rng = list(range(x + 1, 5))
+        for c in self.board[y][x + 1:]:
             if c != ' ':
-                return c
-        return None
-
-    def find_upper_piece(self, x, y):
-        for c in self.board[y - 1::-1]:
-            if c[x] != ' ':
-                return c[x]
-        return None
+                return c, rng
+        return None, rng
 
     def find_under_piece(self, x, y):
-        for c in self.board[y:]:
+        rng = list(range(y + 1, 5))
+        for c in self.board[y + 1:]:
             if c[x] != ' ':
-                return c[x]
-        return None
+                return c[x], rng
+        return None, rng
+
+    def find_left_piece(self, x, y):
+        begin = x - 1 if x - 1 >= 0 else 0
+        rng = list(range(begin, -1, -1))
+        for c in self.board[y][begin::-1]:
+            if c != ' ':
+                return c, rng
+        return None, rng
 
 
 class BLACK:
@@ -66,9 +84,11 @@ class WHITE:
     def __init__(self):
         self.WHITE = "White"
 
+
 class NONE:
     def __init__(self):
         self.NONE = None
+
 
 test =[
     "  B  ",
@@ -79,12 +99,13 @@ test =[
 ]
 
 t = Board(test)
-c = (2, 0)
+c = (2, 1)
 
-# print('Peça:  ', '-', t.find_piece(*c), '-')
-# print('Left:  ', '-', t.find_left_piece(*c), '-')
-# print('Right: ', '-', t.find_right_piece(*c), '-')
-# print('Upper: ', '-', t.find_upper_piece(*c), '-')
-# print('Under: ', '-', t.find_under_piece(*c), '-')
+print('Peça:  ', '-', t.find_piece(*c), '-')
+print('Upper: ', '-', t.find_upper_piece(*c), '-')
+print('Right: ', '-', t.find_right_piece(*c), '-')
+print('Under: ', '-', t.find_under_piece(*c), '-')
+print('Left:  ', '-', t.find_left_piece(*c), '-')
+# print(t.territory(*c))
 
-print(t.territory(*c))
+
