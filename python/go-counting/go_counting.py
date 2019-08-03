@@ -27,20 +27,7 @@ class Board:
         if piece.strip() in ['BB', 'BBB', 'BBBB']:
             return BLACK
         return NONE
-
-    def territories(self):
-        """Find the owners and the territories of the whole board
-
-        Args:
-            none
-
-        Returns:
-            dict(str, set): A dictionary whose key being the owner
-                        , i.e. "W", "B", "".  The value being a set
-                        of coordinates owned by the owner.
-        """
-        pass
-
+  
     def find_piece(self, x, y):
         return self.board[y][x]
 
@@ -107,5 +94,3 @@ print('Right: ', '-', t.find_right_piece(*c), '-')
 print('Under: ', '-', t.find_under_piece(*c), '-')
 print('Left:  ', '-', t.find_left_piece(*c), '-')
 # print(t.territory(*c))
-
-
