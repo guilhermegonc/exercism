@@ -1,13 +1,8 @@
-
 class Board:
-    """Count territories of each player in a Go game
-
-    Args:
-        board (list[str]): A two-dimensional Go board
-    """
 
     def __init__(self, board):
         self.board = board
+        self.test = self.find_right_piece(0, 0)
 
     def __repr__(self):
         return '\n'.join(self.board)
@@ -87,10 +82,4 @@ test =[
 
 t = Board(test)
 c = (2, 1)
-
-print('Peça:  ', '-', t.find_piece(*c), '-')
-print('Upper: ', '-', t.find_upper_piece(*c), '-')
-print('Right: ', '-', t.find_right_piece(*c), '-')
-print('Under: ', '-', t.find_under_piece(*c), '-')
-print('Left:  ', '-', t.find_left_piece(*c), '-')
-# print(t.territory(*c))
+print(t.test)
