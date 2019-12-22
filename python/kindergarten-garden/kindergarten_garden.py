@@ -24,4 +24,4 @@ class Garden:
         return self.students.index(child)
 
     def split_rows(self):
-        return self.diagram.split('\n'
+        return self.diagram.split('\n')
