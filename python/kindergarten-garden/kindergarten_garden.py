@@ -7,11 +7,11 @@ class Garden:
                                                    'Ileana', 'Joseph', 'Kincaid', 'Larry']
 
     def plants(self, child):
-        pos_1_3, pos_2_4 = self.set_limits(child)
+        first_pos, last_pos = self.set_limits(child)
         rows = self.split_rows()
 
-        first_row = [self.plants_dct[p] for p in rows[0][pos_1_3:pos_2_4]]
-        second_row = [self.plants_dct[p] for p in rows[1][pos_1_3:pos_2_4]]
+        first_row = [self.plants_dct[p] for p in rows[0][first_pos:last_pos]]
+        second_row = [self.plants_dct[p] for p in rows[1][first_pos:last_pos]]
 
         return first_row + second_row
 
