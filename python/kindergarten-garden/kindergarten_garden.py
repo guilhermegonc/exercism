@@ -1,11 +1,6 @@
 class Garden:
     def __init__(self, diagram, students=None):
-        self.plants_dct = {
-            'G': 'Grass',
-            'C': 'Clover',
-            'R': 'Radishes',
-            'V': 'Violets'
-        }
+        self.plants_dct = {'G': 'Grass', 'C': 'Clover', 'R': 'Radishes', 'V': 'Violets'}
         self.diagram = diagram.replace('\n', '')
         self.row_size = len(self.diagram) / 2
         self.students = sorted(students) if students else ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Fred',
@@ -19,10 +14,8 @@ class Garden:
 
     def set_positions(self, child):
         reference = self.find_child_position(child)
-
         first_row = int(reference * 2)
         second_row = int(first_row + self.row_size)
-
         return first_row, second_row
 
     def find_child_position(self, child):
