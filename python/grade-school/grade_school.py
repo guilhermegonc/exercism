@@ -1,9 +1,12 @@
+from collections import defaultdict
+
+
 class School:
     def __init__(self):
-        self.students = {}
+        self.students = defaultdict(list)
 
     def add_student(self, name, grade):
-        self.students[grade] = [name] if grade not in self.students else self.students[grade] + [name]
+        self.students[grade].append(name)
         self.students[grade].sort()
 
     def roster(self):
