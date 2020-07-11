@@ -1,61 +1,52 @@
 def say(number):
+    if number == 0:
+        return 'zero'
+
+    if number < 0 or number > 999999999999:
+        raise ValueError('Invalid number')
+
     chunks = split_value(number)
-    # if number == 0:
-    #     return 'zero'
-    #
-    # if 0 < number <= 19:
-    #     return return_units(number)
-    #
-    # elif 19 < number <= 999:
-    #     hundreds = number // 100
-    #     tens = number % 100 // 10
-    #     units = number % 10
-    #
-    #     h = say(hundreds) if hundreds != 0 else ''
-    #     t = return_tens(tens)
-    #     u = say(units) if units != 0 else ''
-    #     return name_chunk(h, t, u)
-    #
-    # elif 999 < number <= 999999999999:
-    #     chunks = break_chunks(number)
-    #     return name_thousands(chunks)
-    #
-    # else:
-    #     raise ValueError('Invalid Number')
+    chunks = add_labels(chunks)
+    chunks = [describe_value(number) + ' ' + label for number, label in chunks]
+    return ' '.join(chunks).strip()
 
-def split_values():
-    return
 
-def return_units(number):
+def split_value(number):
+    str_num = str(number)
+    str_num = str_num.zfill(12)
+    return [str_num[c: c+3] for c in range(0, 12, 3)]
+
+
+def add_labels(numbers):
+    inverted = numbers[::-1]
+    labels = ['', 'thousand', 'million', 'billion']
+    labeled_numbers = [(c, labels[ind]) for ind, c in enumerate(inverted) if c != '000']
+    return labeled_numbers[::-1]
+
+
+def describe_value(number):
+    number = int(number)
+    hundreds = number // 100
+    h = describe_unit(hundreds)
+
+    tens = number % 100 // 10
+    t = describe_tens(tens)
+
+    modulus = number % 100 if number % 100 <= 19 else number % 10
+    m = describe_unit(modulus)
+
+    return name_chunk(h, t, m)
+
+
+def describe_unit(number):
     units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
              'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
     return units[number]
 
 
-def return_tens(number):
+def describe_tens(number):
     tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
     return tens[number]
-
-
-def split_value(number):
-    str_num = str(number)
-    len_num = len(str_num)
-    mod = len_num % 3
-
-    if mod != 0:
-        fill = len_num - mod + 3
-        str_num = str_num.zfill(fill)
-
-    return [int(str_num[c: c+3]) for c in range(0, len_num, 3)]
-
-
-def name_thousands(chunks):
-    chunk_names = ['', 'thousand', 'million', 'billion']
-    str_num = ''
-    for ind, c in enumerate(chunks):
-        name_pos = len(chunks) - 1 - ind
-        str_num += say(c) + ' ' + chunk_names[name_pos] + ' ' if c != 0 else ''
-    return str_num.strip()
 
 
 def name_chunk(hundred, ten, unit):
