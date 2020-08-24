@@ -3,11 +3,9 @@ import re
 
 def parse(markdown):
     lines = markdown.split('\n')
-
     text = [parse_line(i) for i in lines]
     text = ''.join(text)
     text = text.replace('</ul><ul>', '')
-
     return text
 
 
