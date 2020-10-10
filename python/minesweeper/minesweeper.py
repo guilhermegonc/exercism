@@ -1,24 +1,18 @@
 def annotate(minefield):
-    for line, l in enumerate(minefield):
-        ans = l.replace(' ', '0')
-        ans = list(ans)
-        ans = [look_neighbors(row, line, minefield) if p == '*' else p for row, p in enumerate(ans)]
-        print(''.join(ans))
-    # if invalid_input(minefield):
-    #     raise ValueError('Invalid input')
-    #
-    # for row, m in enumerate(minefield):
-    #     pieces = list(m)
-    #     for col, p in enumerate(pieces):
-    #         score = 0
-    #         if pieces[col] != '*':
-    #             for i in range(-1, 2):
-    #                 for j in range(-1, 2):
-    #                     score += 1 if is_mine_next(minefield, row + i, col + j) else 0
-    #                 pieces[col] = str(score) if score != 0 else ' '
-    #                 minefield[row] = ''.join(pieces)
-    #
-    # return minefield
+    if invalid_input(minefield):
+        raise ValueError('Invalid input')
+
+    scores = []
+    for ind, row in enumerate(minefield):
+        row = row.replace(' ', '0')
+        row = list(row)
+        row = [look_neighbors(ind, col, p, minefield) if p.isnumeric() else '*' for col, p in enumerate(row)]
+        scores.append(row)
+
+    for ind, row in enumerate(scores):
+        minefield[ind] = ''.join([str(c) for c in row])
+
+    return minefield
 
 
 def invalid_input(lst):
@@ -32,19 +26,16 @@ def invalid_input(lst):
     return input_str != '' or len(set_len) > 1
 
 
-def is_mine_next(lst, i, j):
-    l_limit, r_limit = len(lst), len(lst[0])
-    if 0 <= i < l_limit and 0 <= j < r_limit:
-        return lst[i][j] == '*'
-    pass
+def look_neighbors(i, j, value, board):
+    count = int(value)
+    row_lim, col_lim = len(board) - 1, len(board[0]) - 1
+
+    for c in range(j-1, j+2):
+        for r in range(i-1, i+2):
+            count += 1 if in_limits(r, row_lim, c, col_lim) and board[r][c] == '*' else 0
+
+    return count if count > 0 else ' '
 
 
-def look_neighbors(i, j, board):
-    for r in range(i-1, i+2):
-        # print(board[j][r])
-        board[j][r] = 1 if 0 <= r >= 2  and board[j][r] != '*' else '*'
-    return '*'
-
-
-bola = ['0*0']
-annotate(bola)
+def in_limits(row, max_row, col, max_col):
+    return 0 <= row <= max_row and 0 <= col <= max_col
