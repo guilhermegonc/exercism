@@ -1,50 +1,55 @@
-import pandas as pd
+from operator import attrgetter
+
+
+class Team:
+    def __init__(self, name):
+        self.name = name
+        self.matches = 0
+        self.wins = 0
+        self.draws = 0
+        self.losses = 0
+        self.points = 0
+
+    def __repr__(self):
+        return f'{self.name: <30} | {self.matches: >2} | {self.wins: >2} | '\
+            f'{self.draws : >2} | {self.losses: >2} | {self.points: >2}'
 
 
 def tally(rows):
-    header = [f'Team {" " : <25} | MP |  W |  D |  L |  P']
-    board = pd.DataFrame()
-
-    for r in rows:
-        board = board.append(tabulate_data(r))
-
-    board = parse_data(board) if rows != [] else rows
-    return header + board
-
-
-def tabulate_data(game):
-    game = game.split(';')
-    result = game[2]
-
-    home = {
-        'team': game[0],
-        'matches': 1,
-        'win': 1 if result == 'win' else 0,
-        'draw': 1 if result == 'draw' else 0,
-        'loss': 1 if result == 'loss' else 0
-    }
-
-    away = {
-        'team': game[1],
-        'matches': 1,
-        'win': 1 if result == 'loss' else 0,
-        'draw': 1 if result == 'draw' else 0,
-        'loss': 1 if result == 'win' else 0
-    }
-
-    return pd.DataFrame([home, away])
+    parsed = [r.split(';') for r in rows]
+    results = [(home, result) for home, _, result in parsed]
+    results += [(away, convert_away(result)) for _, away, result in parsed]
+    teams = [team for team, _ in results]
+    teams = [Team(t) for t in set(teams)]
+    [update_stats(team, res, teams) for team, res in results]
+    ranking = sort_ranking(teams)
+    return [f'Team {" " : <25} | MP |  W |  D |  L |  P'] + [str(team) for team in ranking]
 
 
-def parse_data(df):
-    df = df.groupby('team').sum()
-    df = df.reset_index()
-    df['points'] = df['win'] * 3 + df['draw']
-    df = df.sort_values(by=['points', 'team'], ascending=[False, True])
-
-    srs = df.apply(format_result, axis=1)
-    return srs.tolist()
+def convert_away(home_result):
+    if home_result in ['win', 'loss']:
+        return 'loss' if home_result == 'win' else 'win'
+    return 'draw'
 
 
-def format_result(srs):
-    return f'{srs["team"]: <30} | {srs["matches"]: >2} | {srs["win"]: >2} | ' \
-           f'{srs["draw"] : >2} | {srs["loss"]: >2} | {srs["points"]: >2}'
+def update_stats(team_name, result, table):
+    [update_team(team, result) for team in table if team.name == team_name]
+    pass
+
+
+def update_team(team, result):
+    team.matches += 1
+    if result == 'win':
+        team.wins += 1
+        team.points += 3
+    elif result == 'draw':
+        team.draws += 1
+        team.points += 1
+    else:
+        team.losses += 1
+    pass
+
+
+def sort_ranking(table):
+    table = sorted(table, key=attrgetter('name'))
+    return sorted(table, key=attrgetter('points'), reverse=True)

@@ -16,3 +16,4 @@ class Luhn:
     def double_digit(self, n):
         value = int(n) * 2
         return value if value <= 9 else value - 9
+
